@@ -10,128 +10,128 @@
 </head>
 
 <body style="background: #e2e2e2e2;">
-<div class="container">
-    <div class="row mt-5">
-        <div class="col-md-12">
-            <div class="mb-5">
-                <a
-                        th:href="@{/users}"
-                        class="btn btn-primary float-end"
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-md-12">
+                <div class="mb-5">
+                    <a
+                            th:href="@{/users}"
+                            class="btn btn-primary float-end"
+                    >
+                        Back
+                    </a>
+                </div>
+
+                <form
+                        class="bg-white p-4"
+                        th:action="@{/users/store}"
+                        method="POST"
+                        th:object="${user}"
                 >
-                    Back
-                </a>
+                    <div class="mb-3">
+                        <label
+                                for="username"
+                                class="form-label"
+                        >
+                            Username
+                        </label>
+
+                        <input
+                                type="text"
+                                name="username"
+                                id="username"
+                                th:value="${user.username}"
+                                class="form-control"
+                                th:classappend="${#fields.hasErrors('username') ? 'is-invalid':''}"
+                        >
+
+                        <td th:if="${#fields.hasErrors('username')}">
+                            <span
+                                    class="invalid-feedback"
+                                    th:errors="*{username}"
+                            ></span>
+                        </td>
+                    </div>
+
+                    <div class="mb-3">
+                        <label
+                                for="email"
+                                class="form-label"
+                        >
+                            Email address
+                        </label>
+
+                        <input
+                                type="text"
+                                name="email"
+                                id="email"
+                                class="form-control"
+                                th:value="${user.email}"
+                                th:classappend="${#fields.hasErrors('email') ? 'is-invalid':''}"
+                        >
+
+                        <td th:if="${#fields.hasErrors('email')}">
+                            <span
+                                    class="invalid-feedback"
+                                    th:errors="*{email}"
+                            ></span>
+                        </td>
+                    </div>
+
+                    <div class="mb-3">
+                        <label
+                                for="password"
+                                class="form-label"
+                        >
+                            Password
+                        </label>
+
+                        <input
+                                type="password"
+                                class="form-control"
+                                name="password"
+                                id="password"
+                                th:classappend="${#fields.hasErrors('password') ? 'is-invalid':''}"
+                        >
+
+                        <td th:if="${#fields.hasErrors('password')}">
+                            <span
+                                    class="invalid-feedback"
+                                    th:errors="*{password}"
+                            ></span>
+                        </td>
+                    </div>
+
+                    <div class="mb-3 form-check">
+                        <input
+                                type="checkbox"
+                                name="agreed"
+                                id="agreed"
+                                th:checked="${user.agreed}"
+                                th:classappend="${#fields.hasErrors('agreed') ? 'is-invalid':''}"
+                                class="form-check-input"
+                        >
+
+                        <label
+                                class="form-check-label"
+                                for="agreed"
+                        >
+                            Accept the terms and conditions
+                        </label>
+
+                        <td th:if="${#fields.hasErrors('agreed')}">
+                            <span
+                                    class="invalid-feedback"
+                                    th:errors="*{agreed}"
+                            ></span>
+                        </td>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
             </div>
-
-            <form
-                    class="bg-white p-4"
-                    th:action="@{/users/store}"
-                    method="POST"
-                    th:object="${user}"
-            >
-                <div class="mb-3">
-                    <label
-                            for="username"
-                            class="form-label"
-                    >
-                        Username
-                    </label>
-
-                    <input
-                            type="text"
-                            name="username"
-                            id="username"
-                            th:value="${user.username}"
-                            class="form-control"
-                            th:classappend="${#fields.hasErrors('username') ? 'is-invalid':''}"
-                    >
-
-                    <td th:if="${#fields.hasErrors('username')}">
-                        <span
-                                class="invalid-feedback"
-                                th:errors="*{username}"
-                        ></span>
-                    </td>
-                </div>
-
-                <div class="mb-3">
-                    <label
-                            for="email"
-                            class="form-label"
-                    >
-                        Email address
-                    </label>
-
-                    <input
-                            type="text"
-                            name="email"
-                            id="email"
-                            class="form-control"
-                            th:value="${user.email}"
-                            th:classappend="${#fields.hasErrors('email') ? 'is-invalid':''}"
-                    >
-
-                    <td th:if="${#fields.hasErrors('email')}">
-                        <span
-                                class="invalid-feedback"
-                                th:errors="*{email}"
-                        ></span>
-                    </td>
-                </div>
-
-                <div class="mb-3">
-                    <label
-                            for="password"
-                            class="form-label"
-                    >
-                        Password
-                    </label>
-
-                    <input
-                            type="password"
-                            class="form-control"
-                            name="password"
-                            id="password"
-                            th:classappend="${#fields.hasErrors('password') ? 'is-invalid':''}"
-                    >
-
-                    <td th:if="${#fields.hasErrors('password')}">
-                        <span
-                                class="invalid-feedback"
-                                th:errors="*{password}"
-                        ></span>
-                    </td>
-                </div>
-
-                <div class="mb-3 form-check">
-                    <input
-                            type="checkbox"
-                            name="agreed"
-                            id="agreed"
-                            th:checked="${user.agreed}"
-                            th:classappend="${#fields.hasErrors('agreed') ? 'is-invalid':''}"
-                            class="form-check-input"
-                    >
-
-                    <label
-                            class="form-check-label"
-                            for="agreed"
-                    >
-                        Accept the terms and conditions
-                    </label>
-
-                    <td th:if="${#fields.hasErrors('agreed')}">
-                        <span
-                                class="invalid-feedback"
-                                th:errors="*{agreed}"
-                        ></span>
-                    </td>
-                </div>
-
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
         </div>
     </div>
-</div>
 </body>
 
 </html>
