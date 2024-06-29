@@ -12,6 +12,8 @@ import com.bagisto.demo.entities.User;
 import jakarta.validation.Valid;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.Optional;
+import org.springframework.web.bind.annotation.PostMapping;
+
 
 @Controller
 @RequestMapping("/users")
@@ -85,4 +87,23 @@ public class UserController {
 
         return "redirect:/users";
     }
+
+    @PostMapping("/destroy/{id}")
+    public String destroy(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("message", "User is deleted successfully.");
+
+        this.userServiceImp.deleteById(id);
+
+        return "redirect:/users";
+    }
+
+    @PostMapping("/mass-destroy")
+    public String massDestroy(RedirectAttributes redirectAttributes) {
+        this.userRepository.deleteAll();
+
+        redirectAttributes.addFlashAttribute("message", "All users deleted successfully.");
+
+        return "redirect:/users";
+    }
+    
 }

@@ -6,4 +6,6 @@ import com.bagisto.demo.entities.User;
 
 public interface  UserService {
     public List<User> findAll();
+
+    public void deleteById(Integer id);
 }

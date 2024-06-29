@@ -19,4 +19,9 @@ public class UserServiceImp implements UserService {
     public List<User> findAll() {
         return this.userRepository.findAll();
     }
+
+    @Override
+    public void deleteById(Integer id) {
+        this.userRepository.deleteById(id);
+    }
 }

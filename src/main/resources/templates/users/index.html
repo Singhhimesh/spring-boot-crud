@@ -14,6 +14,9 @@
         <div class="row mt-5">
             <div class="col-md-12">
                 <div class="mb-5">
+                    <form th:action="@{/users/mass-destroy}" method="post" onsubmit="return confirm('Are you sure want to delete all records')">
+                        <button type="submit" class="btn btn-danger float-end ms-2">Delete All</button>
+                    </form>
                     <a th:href="@{/users/create}" class="btn btn-primary float-end">Create</a>
                 </div>
 
@@ -57,7 +60,9 @@
                                                 Edit
                                             </a>
 
-                                            <button type="button" class="btn btn-sm btn-danger">Delete</button>
+                                            <form th:action="@{/users/destroy/{id}(id=${user.id})}" onsubmit="return confirm('Are you sure want to delete')" method="POST">
+                                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                            </form>
                                         </div>
                                     </td>
                                 </tr>
