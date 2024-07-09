@@ -1,28 +1,37 @@
 package com.bagisto.demo.controllers;
 
-import com.bagisto.demo.respsitories.UserRepository;
-import com.bagisto.demo.services.UserServiceImp;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-import com.bagisto.demo.entities.User;
-import jakarta.validation.Valid;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import java.util.Optional;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.bagisto.demo.entities.User;
+import com.bagisto.demo.respsitories.UserRepository;
+import com.bagisto.demo.services.UserServiceImp;
+
+import jakarta.validation.Valid;
 
 
 @Controller
-@RequestMapping("/users")
+@RequestMapping("admin/users")
 public class UserController {
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private UserServiceImp userServiceImp;
+    
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping
     public String index(Model model) {
@@ -48,11 +57,13 @@ public class UserController {
             return "users/create";
         }
 
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
         this.userRepository.save(user);
 
         redirectAttributes.addFlashAttribute("message", "User created successfully.");
 
-        return "redirect:/users";
+        return "redirect:/admin/users";
     }
 
     @GetMapping("/edit/{id}")
@@ -60,7 +71,7 @@ public class UserController {
         Optional<User> user = this.userRepository.findById(id);
 
         if (user.isEmpty()) {
-            return "redirect:/users";
+            return "redirect:/admin/users";
         }
 
         model.addAttribute("user", user.get());
@@ -85,7 +96,7 @@ public class UserController {
 
         redirectAttributes.addFlashAttribute("message", "User updated successfully.");
 
-        return "redirect:/users";
+        return "redirect:/admin/users";
     }
 
     @PostMapping("/destroy/{id}")
@@ -94,7 +105,7 @@ public class UserController {
 
         this.userServiceImp.deleteById(id);
 
-        return "redirect:/users";
+        return "redirect:/admin/users";
     }
 
     @PostMapping("/mass-destroy")
@@ -103,7 +114,6 @@ public class UserController {
 
         redirectAttributes.addFlashAttribute("message", "All users deleted successfully.");
 
-        return "redirect:/users";
+        return "redirect:/admin/users";
     }
-    
 }

@@ -1,19 +1,31 @@
 package com.bagisto.demo.entities;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -25,19 +37,22 @@ public class User {
 
     @NotBlank(message = "Email can not be empty")
     @Email(message = "Email is invalid format")
+    @Column(unique = true, nullable = false)
     private String email;
 
-    @Size(min = 3, max = 12, message = "Password must be between 3 - 12 character")
+    @NotBlank(message = "Password can not be empty !!")
     private String password;
 
-    @AssertTrue(message = "Must agree terms and condition")
-    private boolean agreed;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Category> category;
 
     public User() {
     }
 
-    public User(boolean agreed, String email, Integer id, String password, String username) {
-        this.agreed = agreed;
+    public User(String email, Integer id, String password, String username) {
         this.email = email;
         this.id = id;
         this.password = password;
@@ -76,17 +91,17 @@ public class User {
         this.password = password;
     }
 
-    public boolean isAgreed() {
-        return agreed;
-    }
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        Collection<SimpleGrantedAuthority> roles = this.roles.stream()
+            .map(role -> new SimpleGrantedAuthority(role))
+            .collect(Collectors.toList());
 
-    public void setAgreed(boolean agreed) {
-        this.agreed = agreed;
+        return roles;
     }
 
     @Override
     public String toString() {
-        return "User [id=" + id + ", username=" + username + ", email=" + email + ", password=" + password + ", agreed="
-                + agreed + "]";
+        return "User [id=" + id + ", username=" + username + ", email=" + email + ", password=" + password + "]";
     }
 }

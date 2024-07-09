@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{layouts/master :: parent(~{::#content}, ~{::title}) }">
+
+<head>
+    <title>Categories</title>
+</head>
+
+<body
+    id="content"
+    style="background: #e2e2e2e2;"
+>
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-md-12">
+                <div class="mb-5">
+                    <form th:action="@{/admin/categories/mass-destroy}" method="post" onsubmit="return confirm('Are you sure want to delete all records')">
+                        <button type="submit" class="btn btn-danger float-end ms-2">Delete All</button>
+                    </form>
+                    <a th:href="@{/admin/categories/create}" class="btn btn-primary float-end">Create</a>
+                </div>
+
+                <th:block data-th-text="${user}"></th:block>
+
+                <div
+                    th:if="${message}"
+                    class="alert alert-success"
+                    role="alert"
+                    th:text="${message}"
+                />
+
+                <div class="bg-white p-4">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Title</th>
+                                    <th>Description</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                            
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
